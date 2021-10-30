@@ -5,7 +5,6 @@ function [R_MPL,R_MTOW,R_max]=Range(MTOW,OEW,MPL,FW,MFW)
     RF = FW*0.05;
     TF = FW - RF;
     MRF = MFW*0.05;
-    MTF = MFW - MRF;
 
     eta_p = 0.7;
     LD_max = 17;
@@ -93,4 +92,5 @@ function [R_MPL,R_MTOW,R_max]=Range(MTOW,OEW,MPL,FW,MFW)
     pos = get(h,'Position');
     set(h,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
     print(h,'range','-dpdf','-r0')
+    
 end

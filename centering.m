@@ -1,7 +1,7 @@
 function [xCoM_0,xCG] = centering(FW)
     %% Variables constants en vol i temps
     h = figure(3);
-    % Dades extretes del Excel
+
     A = xlsread('Pesos.xlsx', 'Centrado','B3:G24');
 
     % Pesos
@@ -36,13 +36,13 @@ function [xCoM_0,xCG] = centering(FW)
     crew_min = A(10,4);
     crew_pos = A(10,5);
 
-    pl_pas_max = A(13,3); % Passengers
+    pl_pas_max = A(13,3); 
     pl_pas_min = A(13,4);
     pl_pas_pos = A(13,5);
-    pl_lug_fwd_max = A(11,3); % Baggage forward
+    pl_lug_fwd_max = A(11,3);
     pl_lug_fwd_min = A(11,4);
     pl_lug_fwd_pos = A(11,5);
-    pl_lug_rear_max = A(12,3); % Baggage rear
+    pl_lug_rear_max = A(12,3); 
     pl_lug_rear_min = A(12,4);
     pl_lug_rear_pos = A(12,5);    
 
@@ -51,7 +51,6 @@ function [xCoM_0,xCG] = centering(FW)
     pl_lug_fwd_vect = [pl_lug_fwd_max; pl_lug_fwd_pos];
     pl_lug_rear_vect = [pl_lug_rear_max; pl_lug_rear_pos];
     
-    % Per temps
     
     fuel = FW;
     fuel_pos = A(9,5);
@@ -63,13 +62,11 @@ function [xCoM_0,xCG] = centering(FW)
     xCG = (xCoM_0-xba)/CMA*100;
     
     % MPL
-    time = sym('time', 'positive'); % Max range assumed
-%     mf = 100*3.7854117/3600*0.8; %web rara
-    mf = 620/3600; %per atr segons paco el aficionado https://www.airliners.net/forum/viewtopic.php?t=1355819
+    time = sym('time', 'positive'); 
+    mf = 620/3600; 
     fuel = FW - 0.95*time*mf; 
     temps_buidat_s= solve(0 == FW - time*mf,time);
     temps_buidat = double(temps_buidat_s);
-%     fuel_vect = [fuel; fuel_pos];
     
     A = xlsread('Pesos.xlsx', 'Centrado','B3:G24');
     MAC = A(22,4);
@@ -80,7 +77,7 @@ function [xCoM_0,xCG] = centering(FW)
     temps = zeros(120,1);
     xCoM = zeros(120,1);
     
-    for i=1:1:round(deltat) %cada 2 min
+    for i=1:1:round(deltat) % 2 min evaluation
         temps(i) = 120*i;
         fuelv = subs(fuel,time,temps(i));
         fuel_vect = [fuelv; fuel_pos];
@@ -90,10 +87,9 @@ function [xCoM_0,xCG] = centering(FW)
     
     plot(temps/temps_buidat*100,xCoM)
     
-%     plot_this_xCoM(time, xCoM)
     hold on
     
-    crew_vect = [crew_min; crew_pos]; %si no hi ha passatgers crew = 0
+    crew_vect = [crew_min; crew_pos]; 
     pl_pas_vect = [pl_pas_min; pl_pas_pos];
     pl_lug_fwd_vect = [pl_lug_fwd_min; pl_lug_fwd_pos];
     pl_lug_rear_vect = [pl_lug_rear_min; pl_lug_rear_pos];
@@ -109,8 +105,6 @@ function [xCoM_0,xCG] = centering(FW)
     hold on
     plot(temps/temps_buidat*100,xCoM)
 
-    
-%     legend('xCoM for min PL and crew', 'Human displacement uncertainty', 'xCoM for max PL and crew', 'Human displacement uncertainty')
     legend('OEW', 'MPL')
     legend show
     grid minor

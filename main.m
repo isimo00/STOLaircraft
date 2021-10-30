@@ -1,9 +1,10 @@
 clc,clear,close all
+
 %% INPUT DATA
-% WEIGHTS
+% WEIGHTS OBTAINED FROM PREVIOUS CALCULATIONS
 MPL = 4125;
 MFW = 4524;
-FWr = 0.158127483;
+FWr = 0.158127483; %fuel-weight ratio for the whole mission
 
 %GEOMETRY
 ar = 8;
